@@ -1,0 +1,69 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio files
+.vs/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Rider
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+!packages/build/
+.nuget/packages/
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# Logs
+*.log
+
+# Azure
+PublishProfiles/
+*.azurePubxml
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# BenchmarkDotNet
+BenchmarkDotNet.Artifacts/
+
+# Entity Framework
+*.mdf
+*.ldf
+
+# SQL Server LocalDB
+*.mdf
+*.ldf
+
+# Generated files
+Generated/
+*.generated.cs
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+
+# JetBrains Rider
+.idea/
+
+# Visual Studio Code workspace settings
+*.code-workspace
