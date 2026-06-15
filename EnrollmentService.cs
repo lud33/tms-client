@@ -6,7 +6,10 @@ public interface IEnrollmentService
     Task<EnrollmentRecord> EnrollAsync(string studentId, string courseCode);
     Task<EnrollmentRecord?> GetByIdAsync(string id);
     Task<IReadOnlyList<EnrollmentRecord>> GetAllAsync();
-    Task<bool> DeleteAsync(string studentId, string courseCode);
+    
+    /// delete by enrollment id
+   
+    Task<bool> DeleteAsync(string EnrollmentId);
 }
 
 public class EnrollmentService : IEnrollmentService
@@ -76,27 +79,24 @@ public class EnrollmentService : IEnrollmentService
         return Task.FromResult(all);
     }
 
-    public Task<bool> DeleteAsync(string studentId, string courseCode)
+    public Task<bool> DeleteAsync(string enrollmentId)
+{
+    // Look up and remove directly using the unique enrollmentId as the key
+    var removed = _store.TryRemove(enrollmentId, out var record);
+
+    if (removed)
     {
-        var key = MakeKey(studentId, courseCode);
-
-        var removed = _store.TryRemove(key, out var record);
-
-        if (removed)
-        {
-            _logger.LogInformation(
-                "Deleted enrollment {EnrollmentId}",
-                record!.Id);
-        }
-        else
-        {
-            _logger.LogWarning(
-                "Delete failed for {StudentId} in {CourseCode} (not found)",
-                studentId,
-                courseCode);
-        }
-
-        return Task.FromResult(removed);
+        _logger.LogInformation(
+            "Deleted enrollment {EnrollmentId}",
+            enrollmentId);
     }
-}
+    else
+    {
+        _logger.LogWarning(
+            "Delete failed for enrollment {EnrollmentId} (not found)",
+            enrollmentId);
+    }
 
+    return Task.FromResult(removed);
+}
+}
