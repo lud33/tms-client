@@ -169,7 +169,9 @@ public partial class Program
                 "Simulated database failure for ProblemDetails testing");
         });
 
-        // M5 sesssion 2- page end point 
+        // M5 sesssion 2- page end point
+
+
 
         app.MapGet("/api/students/paged",
     async (int page, StudentQueryService service) =>
@@ -182,6 +184,30 @@ public partial class Program
     return await service.GetTopCoursesAsync();
 }); 
 
+    // module 5 session 3
+   app.MapGet("/api/nplus1-fixed", async (TmsDbContext db) =>
+{
+    var report = await db.Students
+        .AsNoTracking()
+        .Select(s => new
+        {
+            s.Name,
+            EnrollmentCount = s.Enrollments.Count
+        })
+        .ToListAsync();
+
+    return Results.Ok(report);
+});
+    app.MapPost("/api/enrollments/archive",
+    async (TmsDbContext db) =>
+{
+    await db.Enrollments
+        .Where(e => e.EnrolledAt < DateTime.UtcNow.AddMonths(-1))
+        .ExecuteUpdateAsync(s =>
+            s.SetProperty(e => e.IsArchived, true));
+
+    return Results.Ok("Archived old enrollments");
+});
         // -------------------------
         // Session 3 Controllers
         // -------------------------

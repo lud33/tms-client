@@ -12,6 +12,13 @@ public class Student
 
     public bool IsActive { get; set; } = true;
 
+    // module 5 session 3
+    public uint Version { get; set; }
+
+    public bool IsDeleted { get; set; } = false;
+
+    /// end of session 3
+    
     public ICollection<Enrollment> Enrollments { get; set; }
         = new List<Enrollment>();
 
