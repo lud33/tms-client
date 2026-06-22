@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
 using TmsApi.Data;
+using TmsApi.Services;
 
 public partial class Program
 {
@@ -23,7 +24,7 @@ public partial class Program
         // -------------------------
         builder.Services.AddSingleton<EnrollmentWorker>();
         builder.Services.AddSingleton<IEnrollmentService, EnrollmentService>();
-
+        
         // -------------------------
         // Session 5 - EF Core / PostgreSQL
         // -------------------------
@@ -38,6 +39,10 @@ public partial class Program
         // -------------------------
         builder.Services.AddProblemDetails();
         builder.Services.AddOpenApi();
+
+        // module 5 session 2
+          builder.Services.AddScoped<StudentQueryService>();
+          
 
         // Session 3 - Controllers
         builder.Services.AddControllers();
@@ -163,6 +168,19 @@ public partial class Program
                 "DatabaseTest",
                 "Simulated database failure for ProblemDetails testing");
         });
+
+        // M5 sesssion 2- page end point 
+
+        app.MapGet("/api/students/paged",
+    async (int page, StudentQueryService service) =>
+{
+    return await service.GetStudentsPageAsync(page, 20);
+});
+          app.MapGet("/api/courses/top",
+    async (StudentQueryService service) =>
+{
+    return await service.GetTopCoursesAsync();
+}); 
 
         // -------------------------
         // Session 3 Controllers
